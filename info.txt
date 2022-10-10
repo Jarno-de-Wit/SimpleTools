@@ -1,0 +1,83 @@
+Part selection expressions:
+The part selection expressions allow you to easily select the parts you want to edit.
+
+Operators:
+,	|	OR	: OR (any part that satisfies either the requirements on the left hand side, or the requirements on the right hand side of this symbol)
+&	AND	: AND (any part that satisfies both the requirements on the left hand side, and the requirements on the right hand side of this symbol)
+^	XOR	: XOR (any part that satisfies either the requirements on the left hand side, or the requirements on the right hand side, but not both)
+!	: NOT (all parts except those that satisfy the requirement right of this symbol)
+~	: Range (any part with a part id between the part defined on the left hand side, and the part defined on the right hand side, including the edge values) (E.G. 10 - 13 -> [10, 11, 12, 13])
+
+Comparison:
+=	==	Equality
+!=		Inequality
+>		Greater than
+<		Less than
+>=		Greater than or equal
+<=		Less than or equal
+contains	Whether the value contains the following substring
+in		Whether the value is contained within the given value
+~=		Whether the value is contained within the (space delimited) "array" of options defined in the value (note: should not include any type of brackets)
+
+Shapes:
+Radius(origin; range)	A circular volume centered at 'origin' (Vector, part selection expression with 1 compatible part), with a radius of 'range' (int, float). Any value inside the shape is considered < (less than) this shape.
+Plane(origin; normal)	Not yet implemented. A plane dividing the shape into two sides. Any value which is is on the side of the origin pointed to by 'normal' is considered > (greater than) this shape.
+
+Other:
+brackets	Used to denote execution order. Any expression in brackets will be executed first, with the results being used as the value. Allows value selection using [path_to_value] after brackets, but I'm not quite sure anymore how I implemented this, so use this sub-feature at your own risk.
+
+If the only element in a selection expression is a number {n}, the following is implied: id=={n}
+
+
+Expression format:
+{path} {operator} {comparison value}
+(without the curly brackets)
+
+E.G.:
+position[0] > 1		#All parts with their x coordinate greater than 1
+
+1, 2, 3, id=4, 5	#The parts with id 1, 2, 3, 4, or 5
+
+1, 2, position[0] > (id=10)		#Parts 1 and 2, as well as any part with a greater x coordinate than the part with part id 10
+
+position < Radius(id=1, 1) #Any part located within 1 (note: this is actual distance, not SP fuselage lengths, so this is technically 2 fuselage length) from the part with id 1.
+rotation = (id=1)[position] #Any part for which their rotation vector is equal to the position vector of part with id 1
+
+centerOfMass = *	# Any part which has the centerOfMass property defined. '*' functions as a wildcard, so any value for centerOfMass is considered a match.
+
+Wing.State = *		# Any part which has a Wing.State tag (basically any wing). Note: The .State part is optional. The following would thus also be valid: 'Wing = *'. In this case, the .State is implied. This is done since Overload does not show the .State part for sub-tags, thus forcing the user to type this out could lead to confusion.
+
+
+For any questions, feel free to message me. Perhaps, I can answer your question. Perhaps I also don't know because I wrote this code a while ago already, and in typical me style, forgot to write proper documentation outside of the comments in the code themselves which is kind of disorganised.
+
+
+
+Mass Editor:
+Data types: In SP, variables can have multiple types. The script will automatically try to detect the correct data type (based on the original value and input value). The actions of the different operators are then determined based on this data type.
+
+Note: Some properties are by default not present in the (XML) craft save file if they still have their default values, despite showing up in Overload. An example of this is disableAircraftCollisions, which is by default only present in the save file if it is manually set to True. This means if you want to run the boolean toggle on this parameter, you will have to set the default to 'false'. If you simply want to Set the value, this is not required.
+
+Set	Independent of data types, this just sets the value directly to the input value.
+Append	Independent of data types, this appends (add to the end) the input value directly after the original value.
+Prepend	Independent of data types, this prepends (add to the beginning) the input value directly in before the original value.
+
+Boolean (true / false):
++=	None
+-=	None
+*=	Invert the value (true -> false; false -> true)
+/=	None
+
+Number:
++=	Adds the two values together
+-=	Subtracts the input value from the orignal value
+*=	Multiply the two values
+/=	Divides the original value by the input value
+
+Vector (x, y, z):
+Applies the same transformations as numbers, but applies them to each value individually. If input value is a number, and not a Vector, this single value will be used for all entries in the original Vector.
+
+String (any other data type):
++=	Appends the input value to the original value
+-=	Removes all instances of the input value from the original value
+*=	Tries to repeat the original string 'input value' times. If input value is not an integer (whole number), this will raise an error.
+/=	Value should be two substrings, separated by '->'. E.G. a->b. This will replace all instances of a within the original value with b.
