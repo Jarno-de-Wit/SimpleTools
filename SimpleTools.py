@@ -2,10 +2,6 @@ import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = ""
 import pygame
 
-#Dev pygbuttons:
-import sys
-sys.path.insert(0, sys.path.pop(-1))
-
 from pygbuttons import *
 
 import MassEditTools.ScriptsUI
