@@ -37,7 +37,8 @@ def Main():
     cfg.screen = pygame.display.set_mode(cfg.resolution, pygame.RESIZABLE)
     pygame.display.set_caption("SimpleTools")
     cfg.clock = pygame.time.Clock()
-    #buttons = Make_buttons()
+
+    cfg.make_bg()
 
     while cfg.running:
         Handle_input()
@@ -91,6 +92,7 @@ def init():
 def set_res(res):
     cfg.resolution = res
     Buttons.Scale(min(res[0] / 640, res[1] / 720), "Scaled", False)
+    cfg.make_bg()
 
 
 if __name__ == "__main__":

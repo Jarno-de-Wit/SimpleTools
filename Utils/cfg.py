@@ -120,12 +120,9 @@ def Draw():
     """
     Redraws the screen without updating anything
     """
-    global resolution, screen, menu
+    global resolution, screen, menu, background
     #Draw the background
-    background = pygame.Surface((1, 2))
-    pygame.draw.rect(background, cyan, ((0, 0), (1, 1)))
-    pygame.draw.rect(background, dark_blue, ((0, 1), (1, 1)))
-    screen.blit(pygame.transform.smoothscale(background, resolution), screen.get_rect())
+    screen.blit(background, (0, 0))
 
     #Draw the Buttons
     Buttons.Draw(screen, menu)
@@ -134,3 +131,10 @@ def Draw():
         screen.blit(no_focus, (15, 15))
     pygame.display.flip()
 
+# Other ------------------------------------------------------------------------
+def make_bg():
+    global background
+    background = pygame.Surface((1, 2))
+    pygame.draw.rect(background, cyan, ((0, 0), (1, 1)))
+    pygame.draw.rect(background, dark_blue, ((0, 1), (1, 1)))
+    background = pygame.transform.smoothscale(background, resolution)
