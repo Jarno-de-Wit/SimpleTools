@@ -15,10 +15,6 @@ import timeit
 from Utils.XML import XML
 
 
-cyan = (0, 63, 63)
-dark_blue = (0, 0, 31)
-grey = (180, 180, 180)
-
 help_text = """Welcome to SimpleTools, a program created to help perform simple tasks for the game SimplePlanes
  """
 credit_text = """PygButtons: Me
@@ -49,11 +45,7 @@ def Main():
         cfg.clock.tick(Buttons.framerate)
 
 def Handle_input():
-    global q
     for event in pygame.event.get():
-        if False and event.type == pygame.MOUSEBUTTONDOWN and event.key > 2:
-            q = event
-#            print("caught")
         #Let the Buttons process the event first
         Buttons.Event(event, cfg.menu)
         #If any button used the event, move on
@@ -78,7 +70,7 @@ def Handle_input():
 def init():
     global buttons
     buttons = {
-        "Header": Text((120, 50), (400, 50), text = "SimpleTools", group = ["Main", "Main Help", "Credits"], font_size = 40, text_colour = grey, text_offset = 0, text_align = "center"),
+        "Header": Text((120, 50), (400, 50), text = "SimpleTools", group = ["Main", "Main Help", "Credits"], font_size = 40, text_colour = cfg.grey, text_offset = 0, text_align = "center"),
         "MET": Button((170, 200), (300, 45), text = "Mass Edit Tools", group = "Main", functions = {"Click": (cfg.enter, "MET")}),
         "SAG": Button((170, 250), (300, 45), text = "Standard Assemblies", group = "Main", functions = {"Click": (cfg.enter, "SAG")}),
 #        "FT":  Button((170, 300), (300, 45), text = "Funky Trees", group = "Main", functions = {"Click": (cfg.enter, "FT")}),
@@ -87,9 +79,9 @@ def init():
         "Credits": Button((220, 620), (200, 30), text = "Credits", group = "Main", functions = {"Click": (cfg.enter, "Credits")}),
         "Quit": Button((220, 655), (200, 30), text = "Quit", group = "Main", functions = {"Click": cfg.back}),
         "Help": Button((585, 5), (50, 50), text = "?", group = "Main", functions = {"Click": (cfg.enter, "Main Help")}),
-        "Help Text": Text((95, 150), (450, 380), font_size = cfg.help_size, text = help_text, group = "Main Help", text_colour = grey),
-        "Credit Text": Text((95, 150), (450, 380), text = credit_text, group = "Credits", text_colour = grey),
-        "Credit Subtitle": Text((120, 95), (400, 40), text = "Credits", group = "Credits", font_size = 25, text_offset = 0, text_colour = grey),#, align = "center"),
+        "Help Text": Text((95, 150), (450, 380), font_size = cfg.help_size, text = help_text, group = "Main Help", text_colour = cfg.grey),
+        "Credit Text": Text((95, 150), (450, 380), text = credit_text, group = "Credits", text_colour = cfg.grey),
+        "Credit Subtitle": Text((120, 95), (400, 40), text = "Credits", group = "Credits", font_size = 25, text_offset = 0, text_colour = cfg.grey),#, align = "center"),
         "Back": Button((220, 655), (200, 30), text = "Back", group = ["Main Help", "Credits"], functions = {"Click": cfg.back}),
         }
     for button in Buttons.list_all:
