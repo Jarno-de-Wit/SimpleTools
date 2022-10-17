@@ -400,9 +400,9 @@ def Value(inp, path = None, is_expr = True):
         return parts[0]
     elif isinstance(inp, XML):
         return inp
-        
-        
-    return None #If it was no real value        
+
+
+    return None #If it was no real value
 
 def Slice(lst, idx, force_lst = False):
     """
@@ -438,8 +438,3 @@ def Index(parts, indices):
         else:
             _, parts = zip(*Select(idx, parts)) #Technically returns values, not parts
     return parts
-
-if __name__ == "__main__":
-    craft = XML.XMLFile("Wisp.xml")
-    print(parse("y=4.280344", craft))
-    print(parse(input("parse("), craft))
