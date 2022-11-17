@@ -6,9 +6,8 @@ from ..Scripts import Flip
 
 help_text = """Flips the given parts over the given plane.
 
-Origin: The origin point of the plane. Can be any point which lies within the flipping plane.
-
-Normal Vector: The vector / line which has a 90 degree angle to the flipping plane.
+Origin: The origin point of the plane. Can be any point which lies within the flipping plane.\r
+Normal Vector: The vector / line which has a 90 degree angle to the flipping plane.\r
  """
 
 def Run():

@@ -4,9 +4,8 @@ from Utils import cfg
 
 help_text = """This menu contains a multitude of "standard" assemblies one might need in their builds
 
-Curve: A partial torroid made from multiple straight fuselage pieces
-
-Shaped Panel: A flat plane, following the shape specified, made from multiple fuselage pieces
+Curve: A partial torroid made from multiple straight fuselage pieces.\r
+Shaped Panel: A flat plane, following the shape specified, made from multiple fuselage pieces.\r
  """
 
 buttons = {
@@ -19,4 +18,3 @@ buttons = {
     "Help Text": Text((95, 150), (450, 425), font_size = cfg.help_size, text = help_text, group = "SAG Help", text_colour = cfg.grey),
     "Back": Button((220, 655), (200, 30), text = "Back", group = ["SAG", "SAG Help"], functions = {"Click": cfg.back}),
            }
-

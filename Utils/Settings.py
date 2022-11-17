@@ -4,13 +4,10 @@ from Utils import cfg
 
 help_text = """This menu contains the settings for SimpleTools
 
-Clear on Reload: Whether the entered values for any of the tools should be cleared when re-entering the menu.
-
-Track Folder: Whether the file path should follow the last used folder (or always go to the Default Folder if disabled).
-
-Default Folder: The folder in which the file dialog will open when selecting a file. If empty, defaults to the standard install directory.
-
-Units: The unit used when entering size / distance values. Note: Does NOT affect part selection expressions.
+Clear on Reload: Whether the entered values for any of the tools should be cleared when re-entering the menu.\r
+Track Folder: Whether the file path should follow the last used folder (or always go to the Default Folder if disabled).\r
+Default Folder: The folder in which the file dialog will open when selecting a file. If empty, defaults to the standard install directory.\r
+Units: The unit used when entering size / distance values. Note: Does NOT affect part selection expressions.\r
  """
 
 def save():
@@ -48,7 +45,7 @@ buttons = {
     "DefaultFolder": TextBox((170, 280), (300, 40), hint = "Default Folder", group = "Settings"),
     "Units": DropdownBox((170, 325), (300, 40), hint = "Units", options = ["Fuselage Unit", "Meter", "Feet"], group = "Settings"),
     "Help": Button((585, 5), (50, 50), text = "?", group = "Settings", functions = {"Click": (cfg.enter, "Settings Help")}),
-    "Help Text": Text((95, 150), (450, 425), font_size = cfg.help_size, text = help_text, group = "Settings Help", text_colour = cfg.grey, scroll_bar = 1),
+    "Help Text": Text((95, 150), (450, 425), font_size = cfg.help_size, text = help_text, group = "Settings Help", text_colour = cfg.grey),
     "SaveExit": Button((220, 620), (200, 30), text = "Save + Back", group = "Settings", functions = {"Click": save}),
     "Back": Button((220, 655), (200, 30), text = "Back", group = ["Settings", "Settings Help"], functions = {"Click": cfg.back}),
     }

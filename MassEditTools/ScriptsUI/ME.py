@@ -6,15 +6,11 @@ from ..Scripts import ME
 
 help_text = """A mass part property editor.
 
-Parts: The selection expression for the parts which should be edited.
-
-Path: The path / name of the property to be edited. E.G. 'partType' or 'InputController/input'
-
-Operation: The operation to be performed on the value. See info.txt for more information.
-
-Value: The new value which the path should be set to, which should be appended, ...
-
-Default Value: The initial value which should be used if the value does not yet exist for a part.
+Parts: The selection expression for the parts which should be edited.\r
+Path: The path / name of the property to be edited. E.G. 'partType' or 'InputController/input'\r
+Operation: The operation to be performed on the value. See info.txt for more information.\r
+Value: The new value which the path should be set to, which should be appended, ...\r
+Default Value: The initial value which should be used if the value does not yet exist for a part.\r
  """
 
 def Run():

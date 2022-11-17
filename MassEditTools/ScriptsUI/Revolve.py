@@ -6,13 +6,10 @@ from ..Scripts import Revolve
 
 help_text = """Revolves the given part along the axis by n degrees. A rotation without removing the original, thus basically to rotational equivalent of mirroring.
 
-Origin: Any point on the rotation center line. Accepts part selection expressions.
-
-Axis: The rotation axis.
-
-Number of copies: The amount of new copies which should be created.
-
-Angle: The rotation angle, using a left handed coordinate system: If the thumb of your left hand points along the axis, the rotation direction is in the direction of your fingers.
+Origin: Any point on the rotation center line. Accepts part selection expressions.\r
+Axis: The rotation axis.\r
+Number of copies: The amount of new copies which should be created.\r
+Angle: The rotation angle, using a left handed coordinate system: If the thumb of your left hand points along the axis, the rotation direction is in the direction of your fingers.\r
  """
 
 def Run():
