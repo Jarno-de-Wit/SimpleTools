@@ -66,6 +66,10 @@ def Handle_input():
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 cfg.back() #Take one step back in the menu depth
+        elif event.type == pygame.WINDOWMINIMIZED:
+            Buttons.framerate = 1
+        elif event.type == pygame.WINDOWSHOWN:
+            Buttons.framerate = 30
     Buttons.Update(cfg.menu)
 
 def init():
