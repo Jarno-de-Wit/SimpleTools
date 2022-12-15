@@ -4,17 +4,12 @@ from Utils import cfg
 
 help_text = """This menu contains a multitude of tools to perform mass editing of parts, copying of parts, or moving of parts.
 
-Mass Editor: Provides an interface to change part properties in mass
-
-Scale: Allows you to change the scale of (a part of) the craft.
-
-Rotate: Allows (a subsection of) a craft to be rotated around a specified axis.
-
-Revolve: Allows for the creation of copies of (a part of) the craft, each copy being rotated by n degrees.
-
-Flip: Flip (a section of) the craft about a given plane.
-
-Mirror: Creates a new copy of (a part of) the craft, flipped around a given plane.
+Mass Editor: Provides an interface to change part properties in mass.\r
+Scale: Allows you to change the scale of (a part of) the craft.\r
+Rotate: Allows (a subsection of) a craft to be rotated around a specified axis.\r
+Revolve: Allows for the creation of copies of (a part of) the craft, each copy being rotated by n degrees.\r
+Flip: Flip (a section of) the craft about a given plane.\r
+Mirror: Creates a new copy of (a part of) the craft, flipped around a given plane.\r
  """
 
 buttons = {

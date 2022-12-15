@@ -6,9 +6,8 @@ from ..Scripts import Mirror
 
 help_text = """Mirrors the given parts over the given plane.
 
-Origin: The origin point of the plane. Can be any point which lies within the mirroring plane.
-
-Normal Vector: The vector / line which has a 90 degree angle to the mirroring plane.
+Origin: The origin point of the plane. Can be any point which lies within the mirroring plane.\r
+Normal Vector: The vector / line which has a 90 degree angle to the mirroring plane.\r
  """
 
 def Run():

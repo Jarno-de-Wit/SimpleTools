@@ -6,11 +6,9 @@ from ..Scripts import Rotate
 
 help_text = """Rotates the given part along the axis by n degrees.
 
-Origin: Any point on the rotation center line. Accepts part selection expressions.
-
-Axis: The rotation axis.
-
-Angle: The rotation angle, using a left handed coordinate system: If the thumb of your left hand points along the axis, the rotation direction is in the direction of your fingers.
+Origin: Any point on the rotation center line. Accepts part selection expressions.\r
+Axis: The rotation axis.\r
+Angle: The rotation angle, using a left handed coordinate system: If the thumb of your left hand points along the axis, the rotation direction is in the direction of your fingers.\r
  """
 
 def Run():

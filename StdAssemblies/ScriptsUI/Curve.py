@@ -6,15 +6,11 @@ from ..Scripts import Curve
 
 help_text = """Creates a round shape by placing n fuselage pieces one after another, each shifted by some angle.
 
-Angle: The per-segment angle offset.
-
-Radius: The radius to the centerline of the fuselage (at their closest approach point).
-
-Thickness: The diameter of the fuselage pieces used.
-
-Truncate edges: Whether the two edge positioned fuselage pieces should be 'truncated' / cut to not exceed the centerline. Useful when chaining multiple curves together.
-
-Rounded edges: Whether the connection of the fuselages should use 'balls' to create proper rounding. This can especially help make low fuselage count curves look smoother.
+Angle: The per-segment angle offset.\r
+Radius: The radius to the centerline of the fuselage (at their closest approach point).\r
+Thickness: The diameter of the fuselage pieces used.\r
+Truncate edges: Whether the two edge positioned fuselage pieces should be 'truncated' / cut to not exceed the centerline. Useful when chaining multiple curves together.\r
+Rounded edges: Whether the connection of the fuselages should use 'balls' to create proper rounding. This can especially help make low fuselage count curves look smoother.\r
  """
 
 def Run():

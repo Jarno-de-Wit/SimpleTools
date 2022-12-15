@@ -79,7 +79,6 @@ def Move(direction):
         buttons["Node"].Del_option(index = idx)
         buttons["Node"].Add_option(f"({database[idx][0]}, {database[idx][1]})", index = new_idx, set_to = True)
         database.insert(new_idx, database.pop(idx))
-        print(f"{database = }")
 
 def Add():
     idx = buttons["Node"].state + 1

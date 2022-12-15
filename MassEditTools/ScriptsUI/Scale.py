@@ -6,11 +6,9 @@ from ..Scripts import Scale
 
 help_text = """Scales the selected parts with the given factor.
 
-Origin: The location from which the parts should be scaled. Relevant if not all parts in a craft are scaled.
-
-Scaling factor: The multiplication factor with which the parts should be scaled.
-
-Scale Mode: How the part scaling should take place. Allows for positional scaling, and part size scaling, or both.
+Origin: The location from which the parts should be scaled. Relevant if not all parts in a craft are scaled.\r
+Scaling factor: The multiplication factor with which the parts should be scaled.\r
+Scale Mode: How the part scaling should take place. Allows for positional scaling, and part size scaling, or both.\r
  """
 
 def Run():
