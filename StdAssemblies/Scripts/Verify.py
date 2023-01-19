@@ -45,7 +45,6 @@ def coord2d(value):
         return coord
     except TypeError:
         return Err("Invalid coordinate")
-    ...
 
 def Int(value):
     try:
@@ -94,6 +93,5 @@ def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = No
             float_ = [float_]
         for i in float_:
             out.append(Number(i))
-        
-    return errors, *out
 
+    return errors, *out
