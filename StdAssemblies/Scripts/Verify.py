@@ -67,7 +67,7 @@ def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = No
     errors = False
     out = []
 
-    if output_file:
+    if out_file is not None:
         out.append(output_file(out_file))
 
     if pos2d is not None:
