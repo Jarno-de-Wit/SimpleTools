@@ -107,6 +107,15 @@ def neq(path, value):
     if tgt_value is None: #If the tgt is a wildcard
         return all_parts.__xor__(set(part for part, val in Select(path)))
     return set(part for part, val in Select(path) if val != tgt_value)
+def neq_ci(path, value):
+    #Special case, because != to wildcard should return all parts that don't have the attribute
+    # equivalent to "!(path = *)"
+    tgt_value = Value(value, path)
+    if isinstance(tgt_value, XML):
+        raise ParseError("Can not compare XML objects directly")
+    if tgt_value is None: #If the tgt is a wildcard
+        return all_parts.__xor__(set(part for part, val in Select(path)))
+    return set(part for part, val in Select(path) if str(val).lower() != str(tgt_value).lower())
 
 def gt(path, value):
     return comp(path, value, lambda a, b: a > b)
@@ -185,7 +194,10 @@ operators = [
     ({"&": AND, "AND": AND, "|": OR, "OR": OR, "^": XOR, "XOR": XOR}, 0),
     ({"!": NOT}, 0),
     ({"=": eq, "==": eq, "!=": neq, ">": gt, "<": lt, ">=": geq, "<=": leq,
-      "contains": contains, "in": in_, "~=": includes,}, 0),
+      "contains": contains, "*=": contains, "in": in_, "|=": in_, "~=": includes,
+      # Case insensitive versions:
+      "?=": eq_ci, "?==": eq_ci, "?!=": neq_ci, "?*=": contains_ci, "?|=": in_ci,
+      "?~=": includes_ci}, 0),
     ({"~": range_}, 0),
     ({"Radius": Radius, "Plane": Plane}, 0),
     ({"(": brackets}, 0),
@@ -400,9 +412,9 @@ def Value(inp, path = None, is_expr = True):
         return parts[0]
     elif isinstance(inp, XML):
         return inp
-        
-        
-    return None #If it was no real value        
+
+
+    return None #If it was no real value
 
 def Slice(lst, idx, force_lst = False):
     """

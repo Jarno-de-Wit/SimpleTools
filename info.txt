@@ -15,9 +15,13 @@ Comparison:
 <		Less than
 >=		Greater than or equal
 <=		Less than or equal
-contains	Whether the value contains the following substring
-in		Whether the value is contained within the given value
-~=		Whether the value is contained within the (space delimited) "array" of options defined in the value (note: should not include any type of brackets)
+contains *=	Whether the parts' value contains the following substring
+in |=		Whether the parts' value is contained within the given value
+~=		Whether the parts' value is contained within the (space delimited) "array" of options defined in the value (note: should not include any type of brackets)
+
+For text based comparison, prefixing the operator (*=, |=, ~=) with ? (?*=, ?|=, ?~=) yields case insensitive matches.
+E.G.:
+partType ?*= fuselage #All parts with fuSeLaGE (or any otherwise capitalised form of that word) inside their partType
 
 Shapes:
 Radius(origin; range)	A circular volume centered at 'origin' (Vector, part selection expression with 1 compatible part), with a radius of 'range' (int, float). Any value inside the shape is considered < (less than) this shape.
