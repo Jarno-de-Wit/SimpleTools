@@ -26,7 +26,7 @@ def output_file(path):
     if not os.path.basename(path):
         return Err("Missing output file name")
     #Verify if the target folder exists. If not, we can't make a file there either.
-    #Separate test for empty str dirname, because os.path.isdir assumes returns
+    #Separate test for empty str dirname, because os.path.isdir returns
     # False for that, even though the current directory definitely exists.
     elif os.path.isdir(os.path.dirname(path)) or not os.path.dirname(path):
         return path
