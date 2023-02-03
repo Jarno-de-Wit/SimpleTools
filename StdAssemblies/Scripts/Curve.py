@@ -46,7 +46,7 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
     corner_correction = not rounded
     sphere_corners = rounded
     #Start the assembly
-    assembly = SP.SubAssembly("Curve")
+    assembly = SP.SubAssembly(SP.Name_from_path(output_file))
     SP.init(assembly)
     #Calculate part properties / sizes
     #Note: Length has an additional *2 because it is in SP units, not [m]
