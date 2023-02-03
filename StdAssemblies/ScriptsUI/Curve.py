@@ -10,7 +10,8 @@ Angle: The per-segment angle offset.\r
 Radius: The radius to the centerline of the fuselage (at their closest approach point).\r
 Thickness: The diameter of the fuselage pieces used.\r
 Truncate edges: Whether the two edge positioned fuselage pieces should be 'truncated' / cut to not exceed the centerline. Useful when chaining multiple curves together.\r
-Rounded edges: Whether the connection of the fuselages should use 'balls' to create proper rounding. This can especially help make low fuselage count curves look smoother.\r
+Rounded edges: Whether the connection of the fuselages should use 'balls' to create proper rounding. This can especially help make low fuselage count curves look smoother.\n
+Radius and Thickness both support ranges. Use a-b for a linear range, or a~b for a cosine shaped range.
  """
 
 def Run():
