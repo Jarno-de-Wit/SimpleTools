@@ -48,14 +48,10 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
     #Start the assembly
     assembly = SP.SubAssembly(SP.Name_from_path(output_file))
     SP.init(assembly)
-    #Calculate part properties / sizes
-    #Note: Length has an additional *2 because it is in SP units, not [m]
-    #length = radius * 2*math.tan(math.radians(angle / 2))
     #Define the default rotation Vectors (initial rotation)
     x0 = Vector([0, 0, -1])
     y0 = Vector([0, 1, 0])
     z0 = Vector([1, 0, 0])
-    #p0 = [0, radius, 0]
     x_n = 0
     for i in range(n):
         part = Fuselage()
@@ -102,8 +98,7 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
         prev = part
         if sphere_corners and i != n-1:
             sphere = Sphere()
-            sphere["position"] = pos_1.css()#(Rot3d(p0, [0, 0, 1], math.radians(i*angle)) - \
-#                                 Rot3d([length / 4, 0, 0], [0, 0, 1], math.radians(i*angle))).css()
+            sphere["position"] = pos_1.css()
             #Note: Size correction to account for discrepencies between spheres' "round" and
             # fuselages' "round". 4% increase showed the least noticeable gaps.
             sphere["ResizableShape.State"]["size"] = f"{2*1.04*Unit(thickness(x_n))}"
