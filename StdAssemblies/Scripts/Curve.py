@@ -24,7 +24,7 @@ def Run(output_file, angle, radius, thickness, n, truncate, rounded, errout = sy
     if angle is not None and angle >= 180:
         print("Angle too large. May not be >= 180 degrees", file = errout)
         errors = True
-    if n < 1 or (n == 1 and truncate):
+    if not errors and (n < 1 or (n == 1 and truncate)):
         print("Too few segments to create curve", file = errout)
         errors = True
     if not errors:
