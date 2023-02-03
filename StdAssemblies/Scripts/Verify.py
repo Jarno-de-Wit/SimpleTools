@@ -3,6 +3,7 @@ A simple input verification script. A stripped down version from the one in Mass
 """
 import os
 import sys
+import math
 
 from Utils.Vector import Vector
 from Utils.Vect3d import Rot_to_vect
@@ -26,7 +27,7 @@ def output_file(path):
     if not os.path.basename(path):
         return Err("Missing output file name")
     #Verify if the target folder exists. If not, we can't make a file there either.
-    #Separate test for empty str dirname, because os.path.isdir assumes returns
+    #Separate test for empty str dirname, because os.path.isdir returns
     # False for that, even though the current directory definitely exists.
     elif os.path.isdir(os.path.dirname(path)) or not os.path.dirname(path):
         return path
@@ -45,7 +46,6 @@ def coord2d(value):
         return coord
     except TypeError:
         return Err("Invalid coordinate")
-    ...
 
 def Int(value):
     try:
@@ -59,7 +59,48 @@ def Number(value):
     except ValueError:
         return Err("Invalid number")
 
-def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = None, errout = sys.stderr):
+def Range(value):
+    for type in [Constant, Linear, Cosine]:
+        try: return type(value)
+        except WrongTypeError: pass
+    return Err("Invalid number / range")
+
+class WrongTypeError(Exception): pass
+
+# Classes for all range objects
+class Range_: pass
+
+class Constant(Range_):
+    def __init__(self, value):
+        try: self.value = float(value)
+        except ValueError: raise WrongTypeError
+    def __call__(self, x):
+        return self.value
+
+class Linear(Range_):
+    def __init__(self, value):
+        value = value.split("-")
+        if len(value) != 2:
+            raise WrongTypeError
+        try: self.limits = tuple(map(float, value))
+        except ValueError: raise WrongTypeError
+    def __call__(self, x):
+        return x*self.limits[1] + (1-x)*self.limits[0]
+
+class Cosine(Range_):
+    def __init__(self, value):
+        value = value.split("~")
+        if len(value) != 2:
+            raise WrongTypeError
+        try: self.limits = tuple(map(float, value))
+        except ValueError: raise WrongTypeError
+    def __call__(self, x):
+        # Transform the x to create a cosine distribution
+        x = (1 - math.cos(x * math.pi)) / 2
+        return x*self.limits[1] + (1-x)*self.limits[0]
+
+
+def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = None, range_ = None, errout = sys.stderr):
     """
     A wrapper function to batch verify the most common values, including those which depend on the craft file.
     """
@@ -68,7 +109,7 @@ def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = No
     errors = False
     out = []
 
-    if output_file:
+    if out_file is not None:
         out.append(output_file(out_file))
 
     if pos2d is not None:
@@ -94,6 +135,11 @@ def Verify(out_file = None, pos2d = None, pos3d = None, int_ = None, float_ = No
             float_ = [float_]
         for i in float_:
             out.append(Number(i))
-        
-    return errors, *out
 
+    if range_ is not None:
+        if isinstance(range_, str):
+            range_ = [range_]
+        for i in range_:
+            out.append(Range(i))
+
+    return errors, *out

@@ -20,7 +20,7 @@ def Run(output_file, coords, thickness, errout = sys.stderr):
 
 
 def FPanel(output_file, coords, thickness, errout = sys.stderr):
-    craft = SP.SubAssembly(os.path.splitext(os.path.basename(output_file))[0])
+    craft = SP.SubAssembly(SP.Name_from_path(output_file))
     SP.init(craft)
     #Rectify the coords, so turning to the right always goes towards the
     # inside of the panel
@@ -119,7 +119,7 @@ def triangle(coords, thickness):
         raise RuntimeError(f"Required length < 1. This should not happen. DEBUG:{coords}")
     offset = (coords[2] - mid).dot((coords[1] - coords[0]).unit)
     fus["Fuselage.State"]["offset"] = f"{2*offset},0,{2*length}"
-    #The position is the location between the midpoint of 1,2 and 
+    #The position is the location between the midpoint of 1,2 and
     pos = (mid + coords[2]) / 2
     fus["position"] = f"{pos[0]},0,{pos[1]}"
     fus["rotation"] = f"0,{math.degrees(math.atan2(edges[0][1], -edges[0][0]))},0"

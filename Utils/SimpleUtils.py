@@ -2,6 +2,7 @@
 A file containing multiple useful functions to aid in creating script modification scripts
 """
 import sys
+import os
 
 from .XML import XML
 from .Vector import Vector
@@ -95,6 +96,9 @@ def Material(color = "FFFFFF", r = "0", m = "0.65", s = "0.08"):
     material["s"] = s
     return material
 
+def Name_from_path(path):
+    return os.path.basename(os.path.splitext(path)[0])
+
 class Info():
     """
     A class used to keep track of certain variables such as the id, to prevent overlapping id's
@@ -112,7 +116,7 @@ class Info():
         raise DeprecationWarning("Info has been deprecated. Please use init(craft)")
         tmp = primaryCockpit
         primaryCockpit = True
-        return f"{tmp}"    
+        return f"{tmp}"
 
 def Connection(partA, partB, nodesA = "0", nodesB = "0"):
     connection = XML(name = "Connection", format = "short")
@@ -189,4 +193,3 @@ def Reconnect(ids, ncopies):
                 idB = idB[i] if isinstance(idB, list) else idB
                 #Create the new connection
                 connections.database.append(Connection(idA, idB, conn["attachPointsA"], conn["attachPointsB"]))
-        
