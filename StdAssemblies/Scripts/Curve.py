@@ -20,7 +20,7 @@ def Run(output_file, angle, radius, thickness, n, truncate, rounded, errout = sy
     Add "Radius Type" option (inner radius, outer radius, mean radius, ...)
     """
     errors, output_file, n, angle, radius, thickness = \
-            Verify(output_file, int_ = n, float_ = [angle, radius], range_ = thickness, errout = errout)
+            Verify(output_file, int_ = n, float_ = angle, range_ = [radius, thickness], errout = errout)
     if angle is not None and angle >= 180:
         print("Angle too large. May not be >= 180 degrees", file = errout)
         errors = True
@@ -28,7 +28,7 @@ def Run(output_file, angle, radius, thickness, n, truncate, rounded, errout = sy
         print("Too few segments to create curve", file = errout)
         errors = True
     if not errors:
-        return Curve(output_file, angle, Unit(radius), thickness, n, truncate, rounded, errout = errout)
+        return Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = errout)
     return False
 
 def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = sys.stderr):
@@ -50,16 +50,17 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
     SP.init(assembly)
     #Calculate part properties / sizes
     #Note: Length has an additional *2 because it is in SP units, not [m]
-    length = radius * 2*math.tan(math.radians(angle / 2))
+    #length = radius * 2*math.tan(math.radians(angle / 2))
     #Define the default rotation Vectors (initial rotation)
     x0 = Vector([0, 0, -1])
     y0 = Vector([0, 1, 0])
     z0 = Vector([1, 0, 0])
-    p0 = [0, radius, 0]
+    #p0 = [0, radius, 0]
     x_n = 0
     for i in range(n):
         part = Fuselage()
         #Set the part properties / size
+        part["Fuselage.State"]["cornerTypes"] = "3,3,3,3,3,3,3,3"
         part["Fuselage.State"]["frontScale"] = f"{thickness(x_n)},{thickness(x_n)}"
         #Update the part rotation
         x = Rot3d(x0, [0, 0, 1], math.radians(i*angle))
@@ -67,15 +68,16 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
         z = Rot3d(z0, [0, 0, 1], math.radians(i*angle))
         part["rotation"] = Vect_to_rot(x, y, z).css()
         #Part positions
-        pos = Rot3d(p0, [0, 0, 1], math.radians(i*angle))
+        pos = Rot3d([0, Unit(radius(i / (n-1)) / 2), 0], [0, 0, 1], math.radians(i*angle))
         facing = Rot3d([1, 0, 0], [0, 0, 1], math.radians(i*angle))
         # First node position
         if i == 0 and truncate:
             pos_0 = pos
         else:
-            pos_0 = pos + length / 2 * facing
+            l_0 = radius((i) / (n-1)) * math.tan(math.radians(angle / 2)) + (radius(max(0, (i-1) / (n-1))) - radius(i/(n-1))) * (1/math.tan(math.radians(angle)) + 1/math.tan(math.radians(90 - angle/2)))
+            pos_0 = pos + Unit(l_0) / 2 * facing
             if corner_correction:
-                pos_0 += thickness(x_n) * math.tan(math.radians(angle/2)) / 4 * facing
+                pos_0 += Unit(thickness(x_n)) * math.tan(math.radians(angle/2)) / 2 * facing
         # Update the node position
         if truncate:
             x_n += 1/(n-1) * (0.5 if i == 0 or i == n-1 else 1)
@@ -85,17 +87,18 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
         if i == n-1 and truncate:
             pos_1 = pos
         else:
-            pos_1 = pos - length / 2 * facing
+            l_1 = radius((i) / (n-1)) * math.tan(math.radians(angle / 2)) + (radius(min(1, (i+1) / (n-1))) - radius(i/(n-1))) * (1/math.tan(math.radians(angle)) + 1/math.tan(math.radians(90 - angle/2)))
+            pos_1 = pos - Unit(l_1) / 2 * facing
             if corner_correction:
-                pos_1 -= thickness(x_n) * math.tan(math.radians(angle/2)) / 4 * facing
+                pos_1 -= Unit(thickness(x_n)) * math.tan(math.radians(angle/2)) / 2 * facing
 
-        part["Fuselage.State"]["rearScale"] = f"{thickness(x_n)},{thickness(x_n)}"
+        part["Fuselage.State"]["rearScale"] = f"{2 * Unit(thickness(x_n))},{2 * Unit(thickness(x_n))}"
         part["Fuselage.State"]["offset"] = f"0,0,{pos_0.distance(pos_1) * 2}"
         part["position"] = ((pos_0 + pos_1) / 2).css()
         SP.Add_part(part)
         if i: #If this is not the first part:
             #Connect the fuselage to the previous one
-            SP.Connect(prev, part, 0, 1)
+            SP.Connect(prev, part, 1, 0)
         prev = part
         if sphere_corners and i != n-1:
             sphere = Sphere()
@@ -103,10 +106,9 @@ def Curve(output_file, angle, radius, thickness, n, truncate, rounded, errout = 
 #                                 Rot3d([length / 4, 0, 0], [0, 0, 1], math.radians(i*angle))).css()
             #Note: Size correction to account for discrepencies between spheres' "round" and
             # fuselages' "round". 4% increase showed the least noticeable gaps.
-            sphere["ResizableShape.State"]["size"] = f"{1.04*thickness(x_n)}"
+            sphere["ResizableShape.State"]["size"] = f"{2*1.04*Unit(thickness(x_n))}"
             SP.Add_part(sphere)
             SP.Connect(sphere, part, 0, 0)
-
 
     assembly.write(output_file)
     return True
