@@ -99,25 +99,6 @@ def Material(color = "FFFFFF", r = "0", m = "0.65", s = "0.08"):
 def Name_from_path(path):
     return os.path.basename(os.path.splitext(path)[0])
 
-class Info():
-    """
-    A class used to keep track of certain variables such as the id, to prevent overlapping id's
-    """
-    part_id = 0
-    primaryCockpit = False
-    @classmethod
-    def id(cls):
-        raise DeprecationWarning("Info has been deprecated. Please use init(craft)")
-        cls.part_id += 1
-        return f"{cls.part_id}"
-
-    @classmethod
-    def is_primary(cls):
-        raise DeprecationWarning("Info has been deprecated. Please use init(craft)")
-        tmp = primaryCockpit
-        primaryCockpit = True
-        return f"{tmp}"
-
 def Connection(partA, partB, nodesA = "0", nodesB = "0"):
     connection = XML(name = "Connection", format = "short")
     if isinstance(partA, XML):
