@@ -144,6 +144,43 @@ def includes(path, value): #If the string contains the word as a "separate" word
 def includes_ci(path, value): #If the string contains the word as a "separate" word
     return comp(path, value, lambda a, b: str(b).lower() in str(a).lower().split())
 
+def tree(left, right):
+    """
+    Returns all parts which are connected to the given part, but which are not connected to root through any other path than through the selected part itself (or not at all).
+    """
+    global _craft
+    if left.strip(" \t"):
+        Warn("Left side of tree() is not empty")
+    inside = right.strip(" \t").removeprefix("(").removesuffix(")")
+    parts = IDList(inside)
+    if len(parts) == 0:
+        raise ParseError("Part selection parameters too strict")
+    elif len(parts) >= 2:
+        raise ParseError("Part selection parameters not strict enough")
+    part_id = parts.pop()
+
+    # First, create a part "blacklist" which are between the selected part, and
+    # the root part, to remove all connections between the part and the root
+    # from the connection list
+    blacklist = IDList("root")
+    connections = {(int(con["partA"]), int(con["partB"])) for con in _craft.find_all("Connection")}
+    if part_id not in blacklist: # If the selected tree part is NOT the root part itself:
+        blacklist = set(blacklist)
+        while connected := {con for con in connections if con[0] in blacklist or con[1] in blacklist}: # While any new connected connections exist:
+            for con in connected:
+                blacklist.update(con)
+            blacklist.discard(part_id) # Remove the ID of the selected part again - in case it snuck in there - to prevent propagation through that node
+            connections.difference_update(connected) # Remove all used-up connections from the queue to prevent constant re-use of old connections
+
+    # Use the remaining connections to build a new "tree" from the original part onwards
+    part_ids = {part_id}
+    while connected := {con for con in connections if con[0] in part_ids or con[1] in part_ids}: # While any new connected connections exist:
+        for con in connected:
+            part_ids.update(con)
+        connections.difference_update(connected) # Remove all used-up connections from the queue to prevent constant re-use of old connections
+
+    return set(part for part in all_parts if int(part["id"]) in part_ids)
+
 #===============================<   Subspaces   >===============================
 
 class Volume():
@@ -164,7 +201,7 @@ class Radius(Volume):
     def __init__(self, left, right):
         if left.strip(" \t"):
             Warn("Left side of Radius is not empty")
-        pos, _, limit = smart_split(right.strip(" \t").removesuffix(")"), ";")
+        pos, _, limit = smart_split(right.strip(" \t").removeprefix("(").removesuffix(")"), ";")
         if _ is None:
             raise ParseError("Radius does not contain two values. Did you use the right separator (;)?")
         self.pos = Value(pos, "position")
@@ -198,7 +235,7 @@ operators = [
       # Case insensitive versions:
       "?=": eq_ci, "?==": eq_ci, "?!=": neq_ci, "?*=": contains_ci, "?|=": in_ci,
       "?~=": includes_ci}, 0),
-    ({"~": range_}, 0),
+    ({"~": range_, "tree": tree}, 0),
     ({"Radius": Radius, "Plane": Plane}, 0),
     ({"(": brackets}, 0),
              ]
@@ -216,15 +253,17 @@ def init(craft = None, errout = None):
     craft: The craft (as XML) which should be used.
     errout: The error output.
     """
-    global all_parts, __errout, parts, errors
+    global _craft, all_parts, __errout, parts, errors
     #Setup:
     __errout = errout
     if isinstance(craft, XML):
         parts = craft.find("Parts")
         all_parts = set(parts.database)
+        _craft = craft
     elif craft is None:
         parts = XML()
         all_parts = set()
+        _craft = XML()
         __errout = None #Disable errout when no craft is given to prevent the output being spammed with e.g. "too few parts"
     else:
         raise TypeError("Incorrect craft type")
@@ -453,5 +492,6 @@ def Index(parts, indices):
 
 if __name__ == "__main__":
     craft = XML.XMLFile("Wisp.xml")
-    print(parse("y=4.280344", craft))
-    print(parse(input("parse("), craft))
+    init(craft)
+    #print(parse("y=4.280344"))
+    #print(parse(input("parse(")))
