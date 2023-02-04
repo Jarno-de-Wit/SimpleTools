@@ -38,7 +38,7 @@ def Flip(craft, output_file, ids, origin, normal, errout = sys.stderr):
 
     for id_ in ids:
         part = parts.get_filtered("id", str(id_))
-        part = Flip(part)
+        part = Flip_part(part)
         #Calculate the new part position
         pos = Vector.from_css(part["position"])
         pos -= 2 * (pos - origin).projection(normal)

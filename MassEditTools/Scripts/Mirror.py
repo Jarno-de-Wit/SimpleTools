@@ -41,7 +41,7 @@ def Mirror(craft, output_file, ids, origin, normal, errout = sys.stderr):
     for id_ in ids:
         part = parts.get_filtered("id", str(id_))
         new = SP.Copy(part)
-        new = Flip(new)
+        new = Flip_part(new)
         #Calculate the new part position
         pos = Vector.from_css(new["position"])
         pos -= 2 * (pos - origin).projection(normal)
