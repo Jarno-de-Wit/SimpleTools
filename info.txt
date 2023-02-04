@@ -29,6 +29,7 @@ Plane(origin; normal)	Not yet implemented. A plane dividing the shape into two s
 
 Other:
 brackets	Used to denote execution order. Any expression in brackets will be executed first, with the results being used as the value. Allows value selection using [path_to_value] after brackets, but I'm not quite sure anymore how I implemented this, so use this sub-feature at your own risk.
+tree(x)   Returns any part which is (directly or indirectly) connected to part x, but does not have any connections to the root part that don't go through part x. These are the same parts you would get if you picked up part x in the in-game craft editor. 'x' can be any other expression that returns a singular part.
 
 If the only element in a selection expression is a number {n}, the following is implied: id=={n}
 
