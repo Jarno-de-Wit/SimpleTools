@@ -90,7 +90,7 @@ def ME(craft, output_file, ids, path, mode, value, default, errout = sys.stderr)
             elif mode == "Prepend":
                 obj[key] = value + obj_val
                 continue
-                
+
             #Now, for the data type specific actions
             if obj_val.lower() in ["true", "false"]:
                 obj_val = obj_val.lower() == "true"
@@ -127,12 +127,12 @@ def ME(craft, output_file, ids, path, mode, value, default, errout = sys.stderr)
                 # length as the original value, to apply the transformation to all
                 # items
                 if is_int(value) or is_float(value):
-                    value = int_float(value)
+                    value_num = int_float(value)
                 else:
                     try:
-                        value = Vector.from_css(value, int)
+                        value_num = Vector.from_css(value, int)
                     except ValueError:
-                        value = Vector.from_css(value, float)
+                        value_num = Vector.from_css(value, float)
 
                 try:
                     obj_val = Vector.from_css(obj_val, int)
@@ -140,14 +140,14 @@ def ME(craft, output_file, ids, path, mode, value, default, errout = sys.stderr)
                     obj_val = Vector.from_css(obj_val)
 
                 if mode == "+=":
-                    obj[key] = (obj_val + value).css()
+                    obj[key] = (obj_val + value_num).css()
                 elif mode == "-=":
-                    obj[key] = (obj_val - value).css()
+                    obj[key] = (obj_val - value_num).css()
                 elif mode == "*=":
-                    obj[key] = (obj_val * value).css()
+                    obj[key] = (obj_val * value_num).css()
                 elif mode == "/=":
                     try:
-                        obj[key] = (obj_val / value).css()
+                        obj[key] = (obj_val / value_num).css()
                     except ZeroDivisionError:
                         print("Division by 0 is not allowed", file = errout)
                         return False
