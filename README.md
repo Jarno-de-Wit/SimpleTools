@@ -15,7 +15,7 @@ For usage info regarding the specific tools in this program, please read their r
 
 ## Dependencies
 - Python => 3.8
-- pygbuttons => 0.9.2
+- pygbuttons => 0.9.3
 - pygame => 2.0.1
 
 ## Installation
