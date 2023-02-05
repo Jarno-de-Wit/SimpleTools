@@ -38,6 +38,7 @@ def load():
 
 buttons = {
     "Header": Text((110, 50), (420, 50), text = "Settings", group = ["Settings", "Settings Help"], font_size = 40, text_colour = cfg.grey, text_offset = 0, text_align = "center"),
+    "Version Nr": Text((10, 10), (100, 50), text = ".".join(map(str, cfg.version)), group = "Settings", text_colour = cfg.grey),
     "ClearOnReload": Button((170, 200), (35, 35), group = "Settings", mode = "Toggle", accent_background = cfg.c_accent),
     "ClearOnReloadText": Text((220, 200), (250, 35), text = "Clear on Reload", text_colour = cfg.grey, group = "Settings", text_align = "Left"),
     "TrackFolder": Button((170, 240), (35, 35), group = "Settings", mode = "Toggle", accent_background = cfg.c_accent),
@@ -49,4 +50,3 @@ buttons = {
     "SaveExit": Button((220, 620), (200, 30), text = "Save + Back", group = "Settings", functions = {"Click": save}),
     "Back": Button((220, 655), (200, 30), text = "Back", group = ["Settings", "Settings Help"], functions = {"Click": cfg.back}),
     }
-

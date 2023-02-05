@@ -7,6 +7,8 @@ from .XML import XML
 import os
 import sys
 
+version = (0, 1, 1)
+
 #DEBUG print statement (comment out second line to print DEBUG(x))
 #DEBUG = print
 DEBUG = lambda *args, **kwargs: None
