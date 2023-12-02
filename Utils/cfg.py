@@ -52,7 +52,7 @@ elif sys.platform == "win32":
     SPPath = os.path.expanduser("~") + "\\AppData\\LocalLow\\Jundroo\\SimplePlanes"
 elif sys.platform == "darwin":
     SPPath = os.path.expanduser("~") + "/Library/Application Support/unity.Jundroo.SimplePlanes"
-elif sys.platform.beginswith("linux"):
+elif sys.platform.startswith("linux"):
     SPPath = os.getcwd() #TBD
 else:
     SPPath = os.getcwd()
